@@ -19,7 +19,7 @@ import threading
 def face_recognition_hat():
     temps = os.listdir('temp')
     face_images = os.listdir('face_database')
-
+    result_faces_path = 'result_face/' + str(time.strftime('%Y%m%d', time.localtime(time.time())))
     for temp in temps:
         temp_time = temp.split('.')[0]
 
@@ -32,6 +32,7 @@ def face_recognition_hat():
         if image_to_be_matched_encoded:
             image_to_be_matched_encoded = image_to_be_matched_encoded[0]
         else:
+            shutil.copyfile('temp/' + temp, result_faces_path + '/' + 'unknow' + '_' + temp_time + '.jpg')
             os.remove('temp/' + temp)
             continue
         # 导入本地的人脸库进行对比 返回欧式距离最小的人脸 id
@@ -47,10 +48,10 @@ def face_recognition_hat():
                 result[face_image.split('.')[0]] = compare_distance[0]
 
             else:
+
                 continue
 
         face_result = min(result, key=result.get)
-        result_faces_path = 'result_face/' + str(time.strftime('%Y%m%d', time.localtime(time.time())))
 
         # 对结果库的数据进行对比 如果五分钟之内存在相同就跳过不保存
         if os.path.exists(result_faces_path):
@@ -78,7 +79,7 @@ def video_com():
     yolo = YOLO()
     # -------------------------------------#
     #   调用摄像头
-    capture = cv2.VideoCapture("20210207_095624.mp4")
+    capture = cv2.VideoCapture("ttt.mp4")
     # -------------------------------------#
     # capture=cv2.VideoCapture(0)
 
